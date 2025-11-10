@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Lista de Clientes</h4>
+        <a href="{% url 'agregar_cliente' %}" class="btn btn-light">➕ Agregar Cliente</a>
+    </div>
+    <div class="card-body">
+        {% if clientes %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Tipo Cliente</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Dirección</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.apellido }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if cliente.tipo_cliente == 'Residencial' %}bg-primary
+                                {% elif cliente.tipo_cliente == 'Comercial' %}bg-warning
+                                {% else %}bg-info{% endif %}">
+                                {{ cliente.tipo_cliente }}
+                            </span>
+                        </td>
+                        <td>{{ cliente.telefono }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.direccion }}</td>
+                        <td>{{ cliente.fecha_registro }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'actualizar_cliente' cliente.id %}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                                <a href="{% url 'borrar_cliente' cliente.id %}" class="btn btn-danger btn-sm">🗑️ Borrar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <h5>No hay clientes registrados</h5>
+            <p>Comienza agregando el primer cliente al sistema.</p>
+            <a href="{% url 'agregar_cliente' %}" class="btn btn-success">Agregar Primer Cliente</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
